@@ -6,6 +6,9 @@
 #define GRAFO_ENLACE_MULTIPLE_GESTOR_H
 
 #include "../bl/Grafo.h"
+#include "../ui/utilitario/Validar.h"
+//
+//Validar val;
 
 class Gestor {
 public:
@@ -19,9 +22,11 @@ public:
 
     string insertaArista(string salida, string llegada, int peso);
 
-    void listaAdyacencia();
+    string listaAdyacencia();
 
-    void eliminarArista(string salida, string llegada);
+    string listaAdyacenciaXVertice(string vertice);
+
+    string eliminarArista(string salida, string llegada);
 
     string eliminarVertice(string vertice);
 
@@ -31,15 +36,15 @@ public:
 
     bool vacio() const;
 
-    void recorridoAnchura(string pOrigen);
+    string recorridoAnchura(string pOrigen);
 
-    void recorridoProfundidad(string pOrigen);
+    string recorridoProfundidad(string pOrigen);
 
-    void primeroAnchura(string pOrigen, string pDestino);
+    string primeroAnchura(string pOrigen, string pDestino);
 
-    void primeroProfundidad(string pOrigen, string pDestino);
+    string primeroProfundidad(string pOrigen, string pDestino);
 
-    void dijkstra(string pOrigen, string pDestino);
+    string dijkstra(string pOrigen, string pDestino);
 private:
     Grafo *grafo;
 };

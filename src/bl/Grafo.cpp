@@ -3,7 +3,7 @@
 //
 
 #include "Grafo.h"
-#include <iostream>
+
 
 Grafo::Grafo(Vertice *head, Vertice *tail, int tam) : head(head), tail(tail), tam(tam) {}
 
@@ -49,7 +49,7 @@ int Grafo::numVertices() const {
 }
 /**
  * Método:              getVertice
- * Descripción:         Método que permite obtener el nodo que contiene el nombre pasado
+ * Descripción:         Método sobrecargado que permite obtener el nodo que contiene el nombre pasado
  * por parámetro
  * @param nombre        variable de tipo string que representa el nombre del nodo a buscar
  * @return              variable de tipo Vértice que contiene el nombre pasado por parámetro
@@ -64,6 +64,31 @@ Vertice *Grafo::getVertice(string &nombre) {
     }
     return aux;
 }
+
+/**
+ * Método:              getVertice
+ * Descripción:         Método sobrecargado que permite obtener el nodo que contiene el índice pasado
+ * por parámetro
+ * @param indice        variable de tipo int que representa el índice del nodo a buscar
+ * @return              variable de tipo Vértice que contiene el nombre pasado por parámetro
+ */
+Vertice *Grafo::getVertice(int indice) {
+    Vertice * aux = getHead();
+    while (aux != nullptr) {
+        if (aux->getIndice() == indice){
+            return aux;
+        }
+        aux = aux->getNext();
+    }
+    return aux;
+}
+
+/**
+ * Método:              insertVertice
+ * Descripción:         Método que permite insertar un vértice de forma ordenada
+ * @param indice        variable de tipo int que representa el índice del vértice
+ * @param nombre        varibale de tipo string que representa el nombre del vértice a insertar
+ */
 void Grafo::insertVertice(int indice, string &nombre) {
     if(esListaVacia()){
         setHead(new Vertice(indice, nombre));
@@ -145,34 +170,71 @@ string Grafo::insertaArista(string &salida, string &llegada, int peso) {
             nueva->setPrev(origen);
             nueva->setAdy(destino);
         }
+        res = "La arista se creo satisfactoriamente\n";
     } else {
-        cout << "Uno de los vértices no existe\n";
+        res = "Uno de los vértices no existe\n";
     }
     return res;
 }
-/**
- * Método:              insertVertice
- * Descripción:         Método que permite insertar un vértice al grafo
- * @param nombre        variable de tipo string que representa el nombre del vértice
- */
+
 /**
  * Método:              listaAdyacencia
  * Descripción:         Método que permite imprimir la lista de adyacencia
  */
-void Grafo::listaAdyacencia() {
-    Vertice *vertAux = getHead();
-    Arista * arisAux;
-    while (vertAux != nullptr){
-        cout << vertAux->getNombre() << "->";
-        arisAux = vertAux->getAdy();
-        while (arisAux != nullptr){
-            cout << arisAux->getAdy()->getNombre() << "->";
-            arisAux = arisAux->getSig();
+string Grafo::listaAdyacencia() {
+    string lista = "";
+    if(esListaVacia()) {
+        lista = "No existen vértices";
+    } else {
+        lista = "Lista de vértices y adyacencias:\n";
+        Vertice *vertAux = getHead();
+        Arista * arisAux;
+        while (vertAux != nullptr){
+            lista += vertAux->getNombre() + "->";
+            arisAux = vertAux->getAdy();
+            while (arisAux != nullptr){
+                lista += arisAux->getAdy()->getNombre() + "->";
+                arisAux = arisAux->getSig();
+            }
+            vertAux = vertAux->getNext();
+            lista += "\n";
         }
-        vertAux = vertAux->getNext();
-        cout << endl;
     }
+    return lista;
 }
+
+
+string Grafo::listaAdyacenciaXVertice(int indice) {
+    string lista = "";
+    if(esListaVacia()) {
+        lista = "No existen vértices";
+    } else {
+        Vertice *vertAux = getHead();
+        Arista * arisAux = nullptr;
+        while (vertAux != nullptr && vertAux->getIndice() <= indice){
+            if (vertAux->getIndice() == indice){
+                arisAux = vertAux->getAdy();
+                if (arisAux == nullptr){
+                    lista = "El vértice " + vertAux->getNombre() + " no tiene adyacencias\n";
+                } else {
+                    lista = "Lista de adyacencias del vértice " + vertAux->getNombre() + ":\n";
+                }
+                break;
+            }
+            vertAux = vertAux->getNext();
+        }
+        if (arisAux != nullptr){
+            while (arisAux != nullptr){
+                lista += arisAux->getAdy()->getNombre() + "\n";
+                arisAux = arisAux->getSig();
+            }
+        } else {
+            lista = "El vértice ingresado no existe\n";
+        }
+    }
+    return lista;
+}
+
 /**
  * Método:              eliminarArista
  * Descripción:         Método público que permite eliminar un arco o arista entre dos vértices,
@@ -180,10 +242,10 @@ void Grafo::listaAdyacencia() {
  * @param salida        variable de tipo string que representa el vértice de salida
  * @param llegada       variable de tipo string que representa el vértice de llegada
  */
-void Grafo::eliminarArista(string &salida, string &llegada) {
+string Grafo::eliminarArista(string &salida, string &llegada) {
     Vertice *origen = getVertice(salida);
     Vertice *destino = getVertice(llegada);
-    eliminarArista(origen, destino);
+    return eliminarArista(origen, destino);
 }
 /**
  * Método:              eliminarArista
@@ -192,35 +254,39 @@ void Grafo::eliminarArista(string &salida, string &llegada) {
  * @param salida        variable de tipo vértice que representa el vértice de salida
  * @param llegada       variable de tipo vértice que representa el vértice de llegada
  */
-void Grafo::eliminarArista(Vertice * origen, Vertice * destino) {
+string Grafo::eliminarArista(Vertice * origen, Vertice * destino) {
+    string res = "";
     if (origen == nullptr || destino == nullptr){
-        cout << "El origen o destino no existen\n";
+        res = "El origen o destino no existen\n";
     } else {
         int band = 0;
         Arista *actual, *anterior;
         actual = origen->getAdy();
         if (actual == nullptr){ // no existe arista
-            cout << "El vértice origen no tiene aristas" << endl;
+            res = "El vértice origen no tiene aristas\n";
         } else if(actual->getAdy() == destino){ // la primera arista
             origen->setAdy(actual->getSig());
             delete actual;
+            res = "El vértice entre " + origen->getNombre() + " y " + destino->getNombre() + " fue eliminado\n";
         } else { // cualquier otra arista
             while (actual->getAdy() != nullptr){
                 if (actual->getAdy() == destino){
                     band = 1;
                     anterior->setSig(actual->getSig());
                     delete actual;
+                    res = "El vértice entre " + origen->getNombre() + " y " + destino->getNombre() + " fue eliminado\n";
                     break;
                 }
                 anterior = actual;
                 actual = actual->getSig();
             }
             if (band == 0){
-                cout << "Esos dos vértices no están conectados" << endl;
+                res = "Esos dos vértices no están conectados\n";
             }
 
         }
     }
+    return res;
 }
 /**
  * Método:              elminarGrafo
@@ -243,7 +309,7 @@ void Grafo::elminarGrafo() {
  * @param pEliminar     variable de tipo string que representa el nombre del vértice
  * @return              variable de tipo bool, true si se eliminó, false y no existe
  */
-bool Grafo::eliminarVertice(string &pEliminar) {
+string Grafo::eliminarVertice(string &pEliminar) {
     Vertice *vert = getVertice(pEliminar);
     return eliminarVertice(vert);
 }
@@ -253,15 +319,15 @@ bool Grafo::eliminarVertice(string &pEliminar) {
  * @param vert          variable de tipo vértice que representa el vértice a eliminar
  * @return              variable de tipo bool, true si se eliminó, false y no existe
  */
-bool Grafo::eliminarVertice(Vertice *vert) {
+string Grafo::eliminarVertice(Vertice *vert) {
+    string res = "";
     if (vert == nullptr){
-        return false;
-//        cout << "No existe el vertice\n";
+        res = "El vértice ingresado no existe\n";
     } else {
         Vertice *actual, *anterior;
         Arista *aux;
         actual = getHead();
-        while (actual != nullptr){
+        while (actual != nullptr){ // se eliminan las aristas que tenga
             aux = actual->getAdy();
             while (aux != nullptr){
                 if (aux->getAdy() == vert){
@@ -284,28 +350,31 @@ bool Grafo::eliminarVertice(Vertice *vert) {
             anterior->setNext(actual->getNext());
             delete actual;
         }
-        return true;
+        res = "El vértice fue eliminado\n";
     }
+    return res;
 }
 /**
  * Método:              recorridoAnchura
  * Descripción:         Método público que permite hacer un recorrido por anchura del grafo
  * @param pOrigen       variable de tipo string que representa el nombre de vértice de origen
  */
-void Grafo::recorridoAnchura(string &pOrigen) {
+string Grafo::recorridoAnchura(string &pOrigen) {
     Vertice *origen = getVertice(pOrigen);
-    recorridoAnchura(origen);
+    return recorridoAnchura(origen);
 }
 /**
  * Método:              recorridoAnchura
  * Descripción:         Método privado que permite hacer un recorrido por anchura del grafo
  * @param origen        variable de tipo vértice que representa el nombre de vértice de origen
  */
-void Grafo::recorridoAnchura(Vertice *origen) {
+string Grafo::recorridoAnchura(Vertice *origen) {
+    string res = "";
     if (origen == nullptr){
-        cout << "No exite el vértice\n";
+        res = "No exite el vértice";
     } else {
         int band, band2;
+        stack<string> pilaRes; // pila que contiene las respuestas.
         Vertice *actual;
         queue<Vertice*> cola;
         list<Vertice*> lista;
@@ -321,7 +390,7 @@ void Grafo::recorridoAnchura(Vertice *origen) {
                 }
             }
             if (band == 0) { // si el vértice actual no ha sido visitado
-                cout << actual->getNombre() << ", "; // procesar el vértice actual
+                res += actual->getNombre() + ", "; // procesar el vértice actual
                 lista.push_back(actual); // colocar el vértice en la lista de visitados
                 Arista * aux = actual->getAdy();
                 while (aux != nullptr){
@@ -339,6 +408,7 @@ void Grafo::recorridoAnchura(Vertice *origen) {
             }
         }
     }
+    return res + "\n";
 }
 /**
  * Método:              recorridoProfundidad
@@ -346,9 +416,9 @@ void Grafo::recorridoAnchura(Vertice *origen) {
  * recibiendo como parámetro el nombre del vértice de origen
  * @param pOrigen       variable de tipo string que representa el nombre del vértice de origen
  */
-void Grafo::recorridoProfundidad(string &pOrigen) {
+string Grafo::recorridoProfundidad(string &pOrigen) {
     Vertice *origen = getVertice(pOrigen);
-    recorridoProfundidad(origen);
+    return recorridoProfundidad(origen);
 }
 /**
  * Método:              recorridoProfundidad
@@ -356,9 +426,10 @@ void Grafo::recorridoProfundidad(string &pOrigen) {
  * recibiendo como parámetro el vértice de origen
  * @param origen        variable de tipo vértice que representa el nombre del vértice de origen
  */
-void Grafo::recorridoProfundidad(Vertice *origen) {
+string Grafo::recorridoProfundidad(Vertice *origen) {
+    string res = "";
     if (origen == nullptr){
-        cout << "No exite el vértice\n";
+        res = "No exite el vértice";
     } else {
         int band, band2;
         Vertice *actual;
@@ -376,7 +447,7 @@ void Grafo::recorridoProfundidad(Vertice *origen) {
                 }
             }
             if (band == 0){ // si el vertice actual no ha sido visitado:
-                cout << actual->getNombre() << ", "; // se "procesa" el vértice actual
+                res += actual->getNombre() + ", "; // se "procesa" el vértice actual
                 lista.push_back(actual); // se coloca el vértice actual en la lista de visitados
                 Arista *aux = actual->getAdy(); // se va a ubicar en la primera arista del vértice actual
                 while (aux != nullptr){
@@ -394,6 +465,7 @@ void Grafo::recorridoProfundidad(Vertice *origen) {
             }
         }
     }
+    return res + "\n";
 }
 /**
  * Método:              primeroAnchura
@@ -402,10 +474,10 @@ void Grafo::recorridoProfundidad(Vertice *origen) {
  * @param pOrigen       variable de tipo string que representa el nombre del vértice de origen
  * @param pDestino      variable de tipo string que representa el nombre del vértice de destino
  */
-void Grafo::primeroAnchura(string &pOrigen, string &pDestino) {
+string Grafo::primeroAnchura(string &pOrigen, string &pDestino) {
     Vertice *origen = getVertice(pOrigen);
     Vertice *destino = getVertice(pDestino);
-    primeroAnchura(origen, destino);
+    return primeroAnchura(origen, destino);
 }
 /**
  * Método:              primeroAnchura
@@ -414,16 +486,18 @@ void Grafo::primeroAnchura(string &pOrigen, string &pDestino) {
  * @param origen        variable de tipo vértice que representa el vértice de origen
  * @param destino       variable de tipo vértice que representa el vértice de destino
  */
-void Grafo::primeroAnchura(Vertice *origen, Vertice *destino) {
+string Grafo::primeroAnchura(Vertice *origen, Vertice *destino) {
+    string res = "";
     if (origen == nullptr || destino == nullptr){
-        cout << "El origen o destino no existen\n";
+        res = "El origen o destino no existen";
     } else {
-        int band, band2, band3 = 0;
+        int band, band2, band3 = 0, k = 0;
         Vertice *verticeActual, *destinoActual;
         Arista *aux;
         typedef pair<Vertice*, Vertice*> VerticeVertice; // pila de parejas de vértices
         queue<Vertice*> cola;
         stack<VerticeVertice> pila; // inicializar una pila que almacene parejas de datos origen-destino
+        stack<string> pilaRes; // pila que contiene las respuestas.
         list<Vertice*> lista;
         list<Vertice*>::iterator i;
         cola.push(origen); // colocar el vértice origen en una cola
@@ -442,7 +516,8 @@ void Grafo::primeroAnchura(Vertice *origen, Vertice *destino) {
                     band3 = 1;
                     destinoActual = destino; // el vértice destino se convierte en destino actual
                     while (!pila.empty()){ // mientras la pila no esté vacía
-                        cout << destinoActual->getNombre() << "<-"; // imprimir el destino actual; al revés porque en la pila se saca al revés
+//                        res += destinoActual->getNombre() + "<-"; // imprimir el destino actual; al revés porque en la pila se saca al revés
+                        pilaRes.push(destinoActual->getNombre());
                         while (!pila.empty() && pila.top().second != destinoActual){ // mientras la pila no esté vacía y el vértice destino en el tope de la pila sea distinto del destino actual
                             pila.pop(); // desapilar
                         }
@@ -471,9 +546,18 @@ void Grafo::primeroAnchura(Vertice *origen, Vertice *destino) {
         }
         if (band3 == 0){ // si la cola se vació sin encontrar el destino
             // no existe una ruta entre esos vértices
-            cout << "No hay ruta entre esos dos vértices\n";
+            res = "No hay ruta entre esos dos vértices";
+        }
+        while (!pilaRes.empty()){
+            if (k > 0) {
+                res += "->";
+            }
+            res += pilaRes.top();
+            k += 1;
+            pilaRes.pop();
         }
     }
+    return res + "\n";
 }
 /**
  * Método:              primeroProfundidad
@@ -482,10 +566,10 @@ void Grafo::primeroAnchura(Vertice *origen, Vertice *destino) {
  * @param pOrigen       variable de tipo string que representa el nombre del vértice de origen
  * @param pDestino      variable de tipo string que representa el nombre del vértice de destino
  */
-void Grafo::primeroProfundidad(string &pOrigen, string &pDestino) {
+string Grafo::primeroProfundidad(string &pOrigen, string &pDestino) {
     Vertice *origen = getVertice(pOrigen);
     Vertice *destino = getVertice(pDestino);
-    primeroProfundidad(origen, destino);
+    return primeroProfundidad(origen, destino);
 }
 /**
  * Método:              primeroProfundidad
@@ -494,16 +578,18 @@ void Grafo::primeroProfundidad(string &pOrigen, string &pDestino) {
  * @param origen        variable de tipo vértice que representa el vértice de origen
  * @param destino       variable de tipo vértice que representa el vértice de destino
  */
-void Grafo::primeroProfundidad(Vertice *origen, Vertice *destino) {
+string Grafo::primeroProfundidad(Vertice *origen, Vertice *destino) {
+    string res = "";
     if (origen == nullptr || destino == nullptr){
-        cout << "El origen o destino no existen\n";
+        res = "El origen o destino no existen";
     } else {
-        int band, band2, band3 = 0;
+        int band, band2, band3 = 0, k = 0;
         Vertice *verticeActual, *destinoActual;
         Arista *aux;
         typedef pair<Vertice*, Vertice*> parVertices;
         stack<Vertice*> pila;
         list<Vertice*> lista;
+        stack<string> pilaRes; // pila que contiene las respuestas.
         stack<parVertices> pilaPar; // inicializar una pila que almacene parejas de datos origen-destino
         list<Vertice*>::iterator i; // se declara un iterador para la lista
         pila.push(origen); // colocar el vértice origen en una pila
@@ -522,7 +608,8 @@ void Grafo::primeroProfundidad(Vertice *origen, Vertice *destino) {
                     // mostrar la ruta encontrada
                     destinoActual = destino; // el vértice destino se convierte en destino actual
                     while (!pilaPar.empty()){ // mientras la pila no esté vacía
-                        cout << destinoActual->getNombre() << "<-"; // imprimir el destino actual
+//                        res += destinoActual->getNombre() + "<-"; // imprimir el destino actual
+                        pilaRes.push(destinoActual->getNombre());
                         while (!pilaPar.empty() && pilaPar.top().second != destinoActual){ // mientras la pila no esté vacía y el vértice destino en el tipo de la pila sea distinto del destino actual
                             pilaPar.pop(); // desapilar
                         }
@@ -550,9 +637,18 @@ void Grafo::primeroProfundidad(Vertice *origen, Vertice *destino) {
             }
         }
         if (band3 == 0){ // si la pila se vacío sin encontrar el destino
-            cout << "No hay ruta entre esos dos vértices"; // no existe una ruta entre esos vértices.
+            res = "No hay ruta entre esos dos vértices"; // no existe una ruta entre esos vértices.
+        }
+        while (!pilaRes.empty()){
+            if (k > 0) {
+                res += "->";
+            }
+            res += pilaRes.top();
+            k += 1;
+            pilaRes.pop();
         }
     }
+    return res + "\n";
 }
 /**
  * Método:              dijkstra
@@ -560,10 +656,10 @@ void Grafo::primeroProfundidad(Vertice *origen, Vertice *destino) {
  * @param pOrigen       variable de tipo string que representa el nombre del vértice de origen
  * @param pDestino      variable de tipo string que representa el nombre del vértice de destino
  */
-void Grafo::dijkstra(string &pOrigen, string &pDestino) {
+string Grafo::dijkstra(string &pOrigen, string &pDestino) {
     Vertice *origen = getVertice(pOrigen);
     Vertice *destino = getVertice(pDestino);
-    dijkstra(origen, destino);
+    return dijkstra(origen, destino);
 }
 /**
  * Método:              dijkstra
@@ -571,9 +667,11 @@ void Grafo::dijkstra(string &pOrigen, string &pDestino) {
  * @param origen        variable de tipo vértice que representa el vértice de origen
  * @param destino       variable de tipo vértice que representa el vértice de destino
  */
-void Grafo::dijkstra(Vertice *origen, Vertice *destino) {
+string Grafo::dijkstra(Vertice *origen, Vertice *destino) {
+    string res = "";
+    int k = 0;
     if (origen == nullptr || destino == nullptr){
-        cout << "El origen o destino no existen\n";
+        res = "El origen o destino no existen";
     } else {
         int costoActual = 0, band, band2 = 0;
         Vertice *verticeActual, *destinoActual;
@@ -583,20 +681,24 @@ void Grafo::dijkstra(Vertice *origen, Vertice *destino) {
         list<verticeCosto> listaCostos;
         list<verticeCosto> listaOrdenada;
         stack<verticeVertice> pila; // inicializar una pila que almacene parejas de datos origen-destino
+        stack<string> pilaRes; // pila que contiene las respuestas.
         list<verticeCosto>::iterator i, j;
-        listaCostos.push_back(verticeCosto(origen, 0)); // colocar el vértice origen en una lista "costos", asociar a este costo cero
-        listaOrdenada.push_back(verticeCosto(origen, 0)); // colocar el vértice origen en una lista ordenada (por costo), asociar a este un costo cero
+        listaCostos.emplace_back(origen, 0); // permite recibir solo dos argumentos, lo permite a partir de 11.
+        listaOrdenada.emplace_back(origen,0);
+//        listaCostos.push_back(verticeCosto(origen, 0)); // colocar el vértice origen en una lista "costos", asociar a este costo cero
+//        listaOrdenada.push_back(verticeCosto(origen, 0)); // colocar el vértice origen en una lista ordenada (por costo), asociar a este un costo cero
         while (!listaOrdenada.empty()){ // mientras la lista ordenada no esté vacía
             verticeActual = listaOrdenada.front().first; // obtener el primer vértice de la lista ordenada, será el vértice actual.
             costoActual = listaOrdenada.front().second; // el costo asociado a ese vértice será el costo actual
             listaOrdenada.pop_front(); // eliminar el primer vértice de la lista
             if (verticeActual == destino){ // si el vértice actual es igual al vértice destino
-                cout << "Costo: " << costoActual << endl;
+                res = "Costo: " + to_string(costoActual);
                 band2 = 1;
                 // mostar la ruta encontrada y terminar
                 destinoActual = destino; // el vértice destino se convierte en destino actual
                 while (!pila.empty()){ // mientras la pila no esté vacía
-                    cout << destinoActual->getNombre() << "<-"; // imprimir el destino actual
+//                    res += destinoActual->getNombre() + "<-"; // imprimir el destino actual
+                    pilaRes.push(destinoActual->getNombre());
                     while (!pila.empty() && pila.top().second != destinoActual){ // mientras la pila no esté vacía y el vértice destino en el tope de la pila sea distinto del destino actual
                         pila.pop(); // desapilar
                     }
@@ -627,8 +729,10 @@ void Grafo::dijkstra(Vertice *origen, Vertice *destino) {
                     }
                 }
                 if (band == 0){ // si el vértice no se encuentra en la lista de costos
-                    listaCostos.push_back(verticeCosto(aux->getAdy(), costoActual)); // insertar el vértice en la lista de costos, asociando el nuevo costo
-                    listaOrdenada.push_back(verticeCosto(aux->getAdy(), costoActual)); // insertar el vértice en la lista ordenada, asociando el nuevo costo
+                    listaCostos.emplace_back(aux->getAdy(), costoActual); // permite recibir solo dos argumentos, lo permite a partir de 11.
+                    listaOrdenada.emplace_back(aux->getAdy(), costoActual);
+//                    listaCostos.push_back(verticeCosto(aux->getAdy(), costoActual)); // insertar el vértice en la lista de costos, asociando el nuevo costo
+//                    listaOrdenada.push_back(verticeCosto(aux->getAdy(), costoActual)); // insertar el vértice en la lista ordenada, asociando el nuevo costo
                     listaOrdenada.sort(comparacion);
                     pila.push(verticeVertice(verticeActual, aux->getAdy())); // se apila la pareja: vértice actual y vértice destino
                     costoActual -= aux->getPeso();
@@ -637,9 +741,19 @@ void Grafo::dijkstra(Vertice *origen, Vertice *destino) {
             }
         }
         if (band2 == 0){ // si la lista ordenada se vació sin encontrar el destino: no existe una ruta entre esos vértice
-            cout << "No hay ruta entre esos dos vértices"; // no existe una ruta entre esos vértices.
+            res = "No hay ruta entre esos dos vértices"; // no existe una ruta entre esos vértices.
+        }
+        res += "\n";
+        while (!pilaRes.empty()){
+            if (k > 0) {
+                res += "->";
+            }
+            res += pilaRes.top();
+            k += 1;
+            pilaRes.pop();
         }
     }
+    return res + "\n";
 }
 
 
@@ -653,3 +767,4 @@ void Grafo::dijkstra(Vertice *origen, Vertice *destino) {
 bool Grafo::comparacion(pair<Vertice *, int> a, pair<Vertice *, int> b) {
     return a.second < b.second;
 }
+

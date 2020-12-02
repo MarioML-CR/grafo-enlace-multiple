@@ -16,7 +16,7 @@ public:
 
     bool esPrimo(int); // Analiza si un número es primo
 
-    int stringASCII(string &);
+    static int stringASCII(string &);
 };
 
 #endif //GRAFO_ENLACE_MULTIPLE_VALIDAR_H

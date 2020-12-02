@@ -56,3 +56,5 @@ Vertice *Arista::getPrev() const {
 void Arista::setPrev(Vertice *prev) {
     Arista::prev = prev;
 }
+
+

@@ -34,27 +34,31 @@ public:
 
     Vertice *getVertice(string &nombre);
 
+    Vertice *getVertice(int indice);
+
     void insertVertice(int indice, string & nombre);
 
     string insertaArista(string &salida, string &llegada, int peso);
 
-    void listaAdyacencia();
+    string listaAdyacencia();
 
-    void eliminarArista(string &salida, string &llegada);
+    string listaAdyacenciaXVertice(int indice);
 
-    bool eliminarVertice(string &pEliminar);
+    string eliminarArista(string &salida, string &llegada);
+
+    string eliminarVertice(string &pEliminar);
 
     void elminarGrafo();
 
-    void recorridoAnchura(string &pOrigen);
+    string recorridoAnchura(string &pOrigen);
 
-    void recorridoProfundidad(string &pOrigen);
+    string recorridoProfundidad(string &pOrigen);
 
-    void primeroAnchura(string &pOrigen, string &pDestino);
+    string primeroAnchura(string &pOrigen, string &pDestino);
 
-    void primeroProfundidad(string &pOrigen, string &pDestino);
+    string primeroProfundidad(string &pOrigen, string &pDestino);
 
-    void dijkstra(string &pOrigen, string &pDestino);
+    string dijkstra(string &pOrigen, string &pDestino);
 private:
     Vertice *head;
     Vertice *tail;
@@ -64,19 +68,19 @@ private:
 
     void insertarAlFinal(int indice, string & nombre);
 
-    void eliminarArista(Vertice * origen, Vertice * destino);
+    string eliminarArista(Vertice * origen, Vertice * destino);
 
-    bool eliminarVertice(Vertice * vert);
+    string eliminarVertice(Vertice * vert);
 
-    void recorridoAnchura(Vertice *origen);
+    string recorridoAnchura(Vertice *origen);
 
-    void recorridoProfundidad(Vertice *origen);
+    string recorridoProfundidad(Vertice *origen);
 
-    void primeroAnchura(Vertice * origen, Vertice * destino);
+    string primeroAnchura(Vertice * origen, Vertice * destino);
 
-    void primeroProfundidad(Vertice * origen, Vertice * destino);
+    string primeroProfundidad(Vertice * origen, Vertice * destino);
 
-    void dijkstra(Vertice * origen, Vertice * destino);
+    string dijkstra(Vertice * origen, Vertice * destino);
 
     static bool comparacion(pair<Vertice*, int> a, pair<Vertice*, int> b);
 };

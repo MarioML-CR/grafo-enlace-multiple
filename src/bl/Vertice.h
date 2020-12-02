@@ -2,11 +2,12 @@
 // Created by Mario Martinez on 23/11/20.
 //
 
-#ifndef GRAFO_ENLACE_MULTIPLE_VERTICE_H
-#define GRAFO_ENLACE_MULTIPLE_VERTICE_H
+#ifndef VERTICE_H
+#define VERTICE_H
 
 #include <string>
-class Vertice;
+class Arista;
+
 #include "Arista.h"
 
 

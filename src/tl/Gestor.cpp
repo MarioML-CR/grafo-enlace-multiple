@@ -24,12 +24,17 @@ string Gestor::insertaArista(string salida, string llegada, int peso) {
     return getGrafo()->insertaArista(salida, llegada, peso);
 }
 
-void Gestor::listaAdyacencia() {
-    getGrafo()->listaAdyacencia();
+string Gestor::listaAdyacencia() {
+    return getGrafo()->listaAdyacencia();
 }
 
-void Gestor::eliminarArista(string salida, string llegada) {
-    getGrafo()->eliminarArista(salida, llegada);
+
+string Gestor::listaAdyacenciaXVertice(string vertice) {
+    return getGrafo()->listaAdyacenciaXVertice(Validar::stringASCII(vertice));
+}
+
+string Gestor::eliminarArista(string salida, string llegada) {
+    return getGrafo()->eliminarArista(salida, llegada);
 }
 
 void Gestor::eliminarGrafo() {
@@ -45,29 +50,26 @@ bool Gestor::vacio() const {
 }
 
 string Gestor::eliminarVertice(string vertice) {
-    if (getGrafo()->eliminarVertice(vertice)) {
-        return "El vértice fue eliminado\n";
-    } else {
-        return "El vértice que ingresó no existe\n";
-    }
+    return getGrafo()->eliminarVertice(vertice);
 }
 
-void Gestor::recorridoAnchura(string pOrigen) {
-    getGrafo()->recorridoAnchura(pOrigen);
+string Gestor::recorridoAnchura(string pOrigen) {
+    return getGrafo()->recorridoAnchura(pOrigen);
 }
 
-void Gestor::recorridoProfundidad(string pOrigen) {
-    getGrafo()->recorridoProfundidad(pOrigen);
+string Gestor::recorridoProfundidad(string pOrigen) {
+    return getGrafo()->recorridoProfundidad(pOrigen);
 }
 
-void Gestor::primeroAnchura(string pOrigen, string pDestino) {
-    getGrafo()->primeroAnchura(pOrigen, pDestino);
+string Gestor::primeroAnchura(string pOrigen, string pDestino) {
+    return getGrafo()->primeroAnchura(pOrigen, pDestino);
 }
 
-void Gestor::primeroProfundidad(string pOrigen, string pDestino) {
-    getGrafo()->primeroProfundidad(pOrigen, pDestino);
+string Gestor::primeroProfundidad(string pOrigen, string pDestino) {
+    return getGrafo()->primeroProfundidad(pOrigen, pDestino);
 }
 
-void Gestor::dijkstra(string pOrigen, string pDestino) {
-    getGrafo()->dijkstra(pOrigen, pDestino);
+string Gestor::dijkstra(string pOrigen, string pDestino) {
+    return getGrafo()->dijkstra(pOrigen, pDestino);
 }
+
