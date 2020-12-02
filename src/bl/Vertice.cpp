@@ -4,13 +4,19 @@
 
 #include "Vertice.h"
 
-Vertice::Vertice(int indice, const string &nombre, Vertice *sig, Arista *ady): indice(indice), nombre(nombre), next(sig),
-                                                                               ady(ady) {
+//Vertice::Vertice(int indice, const string &nombre, Vertice *sig, Arista *ady): indice(indice), nombre(nombre), next(sig),
+//                                                                               ady(ady) {
+//    setIndice(indice);
+//    setNombre(nombre);
+//}
+
+Vertice::Vertice(int indice, const string &nombre, Vertice *next, Arista *ady,
+                 Arista *precedente) : indice(indice),nombre(nombre),next(next),ady(ady),precedente(precedente) {
     setIndice(indice);
     setNombre(nombre);
 }
 
-Vertice::~Vertice() {
+                 Vertice::~Vertice() {
 
 }
 
@@ -45,4 +51,14 @@ int Vertice::getIndice() const {
 void Vertice::setIndice(int indice) {
     Vertice::indice = indice;
 }
+
+Arista *Vertice::getPrecedente() const {
+    return precedente;
+}
+
+void Vertice::setPrecedente(Arista *precedente) {
+    Vertice::precedente = precedente;
+}
+
+
 

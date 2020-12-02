@@ -17,7 +17,10 @@ class Vertice {
 public:
 //    Vertice(const string &nombre);
 
-    Vertice(int indice, const string &nombre, Vertice *sig = nullptr, Arista *ady = nullptr);
+//    Vertice(int indice, const string &nombre, Vertice *sig = nullptr, Arista *ady = nullptr);
+
+    Vertice(int indice, const string &nombre, Vertice *next = nullptr,
+            Arista *ady = nullptr, Arista *precedente = nullptr);
 
     virtual ~Vertice();
 
@@ -37,11 +40,16 @@ public:
 
     void setIndice(int indice);
 
+    Arista *getPrecedente() const;
+
+    void setPrecedente(Arista *precedente);
+
 private:
     int indice; // para ordenar lo vértices en forma ascendente
     string nombre;
     Vertice *next;
     Arista *ady;
+    Arista *precedente;
 };
 
 

@@ -15,7 +15,10 @@ public:
 
 //    Arista(int peso, const string &nombre, Vertice *ady, Arista *sig = nullptr);
 
-    Arista(int peso, const string &nombre, Vertice *ady, Arista *sig = nullptr, Vertice *prev = nullptr);
+//    Arista(int peso, const string &nombre, Vertice *ady, Arista *sig = nullptr, Vertice *prev = nullptr);
+
+    Arista(int peso, const string &nombre, Vertice *ady, Arista *sig = nullptr,
+           Vertice *prev = nullptr, Arista *ant = nullptr);
 
     virtual ~Arista();
 
@@ -39,12 +42,17 @@ public:
 
     void setPrev(Vertice *prev);
 
+    Arista *getAnt() const;
+
+    void setAnt(Arista *ant);
+
 private:
     int peso;
     string nombre;
     Vertice *ady;
     Arista *sig;
     Vertice *prev;
+    Arista *ant;
 };
 
 

@@ -152,6 +152,7 @@ string Grafo::insertaArista(string &salida, string &llegada, int peso) {
     Vertice *origen = getVertice(salida);
     Vertice *destino = getVertice(llegada);
     if (origen != nullptr && destino != nullptr){
+        // Aristas adyacentes
         Arista *nueva = new  Arista(peso, llegada,destino);
         Arista *aux = origen->getAdy();
         Vertice *anterior = origen;
@@ -169,6 +170,19 @@ string Grafo::insertaArista(string &salida, string &llegada, int peso) {
             aux->setSig(nueva);
             nueva->setPrev(origen);
             nueva->setAdy(destino);
+        }
+//         Aristas adyacentes
+        Arista *nuevo = new Arista(peso, salida, origen);
+        Arista * aux2 = destino->getPrecedente();
+        if (aux2 == nullptr){
+            destino->setPrecedente(nuevo);
+            nuevo->setPrev(origen);
+        } else {
+            while (aux2->getAnt() != nullptr){
+                aux2 = aux2->getAnt();
+            }
+            aux2->setAnt(nuevo);
+            nuevo->setPrev(origen);
         }
         res = "La arista se creo satisfactoriamente\n";
     } else {

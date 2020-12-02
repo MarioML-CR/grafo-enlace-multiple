@@ -3,15 +3,24 @@
 //
 
 #include "Arista.h"
-Arista::Arista(int peso, const string &nombre, Vertice *ady, Arista *sig, Vertice *prev) : peso(peso), nombre(nombre),
-                                                                                           ady(ady), sig(sig),
-                                                                                           prev(prev) {
+//Arista::Arista(int peso, const string &nombre, Vertice *ady, Arista *sig, Vertice *prev) : peso(peso), nombre(nombre),
+//                                                                                           ady(ady), sig(sig),
+//                                                                                           prev(prev) {
+//    setPeso(peso);
+//    setNombre(nombre);
+//    setAdy(ady);
+//}
+
+Arista::Arista(int peso, const string &nombre, Vertice *ady, Arista *sig, Vertice *prev, Arista *ant) : peso(peso),
+                                                                                                        nombre(nombre),
+                                                                                                        ady(ady),
+                                                                                                        sig(sig),
+                                                                                                        prev(prev),
+                                                                                                        ant(ant) {
     setPeso(peso);
     setNombre(nombre);
     setAdy(ady);
 }
-
-
 
 Arista::~Arista() {
 
@@ -56,5 +65,16 @@ Vertice *Arista::getPrev() const {
 void Arista::setPrev(Vertice *prev) {
     Arista::prev = prev;
 }
+
+Arista *Arista::getAnt() const {
+    return ant;
+}
+
+void Arista::setAnt(Arista *ant) {
+    Arista::ant = ant;
+}
+
+
+
 
 
