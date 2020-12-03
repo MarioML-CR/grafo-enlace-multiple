@@ -6,16 +6,12 @@
 #define ARISTA_H
 
 class Vertice;
-#include "Vertice.h"
+//#include "Vertice.h"
 #include <string>
 using namespace std;
 
 class Arista {
 public:
-
-//    Arista(int peso, const string &nombre, Vertice *ady, Arista *sig = nullptr);
-
-//    Arista(int peso, const string &nombre, Vertice *ady, Arista *sig = nullptr, Vertice *prev = nullptr);
 
     Arista(int peso, const string &nombre, Vertice *ady, Arista *sig = nullptr,
            Vertice *prev = nullptr, Arista *ant = nullptr);

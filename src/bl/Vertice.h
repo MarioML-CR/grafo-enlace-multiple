@@ -6,7 +6,7 @@
 #define VERTICE_H
 
 #include <string>
-class Arista;
+//class Arista;
 
 #include "Arista.h"
 
@@ -15,9 +15,6 @@ using namespace std;
 
 class Vertice {
 public:
-//    Vertice(const string &nombre);
-
-//    Vertice(int indice, const string &nombre, Vertice *sig = nullptr, Arista *ady = nullptr);
 
     Vertice(int indice, const string &nombre, Vertice *next = nullptr,
             Arista *ady = nullptr, Arista *precedente = nullptr);

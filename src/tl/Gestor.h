@@ -18,7 +18,7 @@ public:
 
     void setGrafo(Grafo *grafo);
 
-    void insertVertice(int valor, string nombre);
+    void insertVertice(string nombre);
 
     string insertaArista(string salida, string llegada, int peso);
 

@@ -231,8 +231,7 @@ void insertVerticeUser(){
         cout << "Ingrese el nombre del vértice " << i << "\n";
         cin >> vertice;
         for (auto & c: vertice) c = toupper(c);
-        int valor = validar.stringASCII(vertice);
-        gestor.insertVertice(valor, vertice);
+        gestor.insertVertice(vertice);
     }
     cout << "La carga se realizó satisfactoriamente.\n";
 }
@@ -257,7 +256,7 @@ void insertVerAristCase1(){
     // inserción de vértices
     string nombres[7] = {"SAN_JOSé", "ALAJUELA", "CARTAGO", "HEREDIA", "PUNTARENAS", "GUANACASTE", "LIMóN"};
     for (int i = 0; i < 7; ++i) {
-        gestor.insertVertice(validar.stringASCII(nombres[i]),nombres[i]);
+        gestor.insertVertice(nombres[i]);
     }
     // inserción de aristas
     gestor.insertaArista("SAN_JOSé", "CARTAGO", 500);
@@ -280,7 +279,7 @@ void insertVerAristCase2(){
     // inserción de vértices
     string nombres[7] = {"A", "B", "C", "G", "F", "D", "E"};
     for (int i = 0; i < 7; ++i) {
-        gestor.insertVertice(validar.stringASCII(nombres[i]),nombres[i]);
+        gestor.insertVertice(nombres[i]);
     }
     // inserción de aristas
     gestor.insertaArista("A", "A", 13);
@@ -310,7 +309,7 @@ void insertVerAristCase3(){
     // inserción de vértices
     string nombres[10] = {"TIJ", "MTY", "MZT", "BJX", "GDL", "SAN", "TAM", "MEX", "CUN", "MID"};
     for (int i = 0; i < 10; ++i) {
-        gestor.insertVertice(validar.stringASCII(nombres[i]),nombres[i]);
+        gestor.insertVertice(nombres[i]);
     }
     // inserción de aristas
     gestor.insertaArista("TIJ", "MTY", 800);
@@ -335,7 +334,7 @@ void insertVerAristCase4(){
     // inserción de vértices
     string nombres[8] = {"A", "B", "C", "D", "E", "F", "G", "H"};
     for (int i = 0; i < 8; ++i) {
-        gestor.insertVertice(validar.stringASCII(nombres[i]),nombres[i]);
+        gestor.insertVertice(nombres[i]);
     }
     // inserción de aristas
     gestor.insertaArista("A", "B", 3);
