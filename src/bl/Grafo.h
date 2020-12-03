@@ -40,9 +40,13 @@ public:
 
     string insertaArista(string &salida, string &llegada, int peso);
 
-    string listaAdyacencia();
+    string listaSucesores();
 
-    string listaAdyacenciaXVertice(int indice);
+    string listaSucesoresXVertice(int indice);
+
+    string listaPredecesores();
+
+    string listaPredecesoresXVertice(int indice);
 
     string eliminarArista(string &salida, string &llegada);
 

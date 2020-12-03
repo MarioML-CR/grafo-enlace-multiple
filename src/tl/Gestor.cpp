@@ -25,13 +25,22 @@ string Gestor::insertaArista(string salida, string llegada, int peso) {
 }
 
 string Gestor::listaAdyacencia() {
-    return getGrafo()->listaAdyacencia();
+    return getGrafo()->listaSucesores();
 }
 
 
 string Gestor::listaAdyacenciaXVertice(string vertice) {
-    return getGrafo()->listaAdyacenciaXVertice(Validar::stringASCII(vertice));
+    return getGrafo()->listaSucesoresXVertice(Validar::stringASCII(vertice));
 }
+
+string Gestor::listaPredecesores() {
+    return getGrafo()->listaPredecesores();
+}
+
+string Gestor::listaPredecesoresXVertice(string vertice) {
+    return getGrafo()->listaPredecesoresXVertice(Validar::stringASCII(vertice));
+}
+
 
 string Gestor::eliminarArista(string salida, string llegada) {
     return getGrafo()->eliminarArista(salida, llegada);
@@ -72,4 +81,6 @@ string Gestor::primeroProfundidad(string pOrigen, string pDestino) {
 string Gestor::dijkstra(string pOrigen, string pDestino) {
     return getGrafo()->dijkstra(pOrigen, pDestino);
 }
+
+
 

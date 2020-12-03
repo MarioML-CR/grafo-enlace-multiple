@@ -23,6 +23,8 @@ void insertVerticeUser();
 void insertaAristaUser();
 void listaAdyacencia();
 void listaAdyacenciaXVertice();
+void listaPredecesores();
+void listaPredecesoresXVertice();
 void eliminarArista();
 void eliminarVertice();
 void eliminarGrafo();
@@ -44,17 +46,19 @@ void menu() {
     do {
         cout << "\nMenú Árbol\n\nElija una opción\n" <<
              "01 Agregar vértices y aristas\n" <<
-             "02 Imprimir\n" <<
-             "03 Imprimir adyacencias por vértice\n" <<
-             "04 Número de vértices\n" <<
-             "05 Eliminar vértice\n" <<
-             "06 Eliminar arista\n" <<
-             "07 Eliminar grafo\n" <<
-             "08 Recorrido en anchura\n" <<
-             "09 Recorrido en profundidad\n" <<
-             "10 Primero en anchura\n" <<
-             "11 Primero en profundidad\n" <<
-             "12 Ruta de menor costo (Dijkstra)\n" <<
+             "02 Imprimir sucesores\n" <<
+             "03 Imprimir sucesores por vértice\n" <<
+             "04 Imprimir predecesores\n" <<
+             "05 Imprimir predecesores por vértice\n" <<
+             "06 Número de vértices\n" <<
+             "07 Eliminar vértice\n" <<
+             "08 Eliminar arista\n" <<
+             "09 Eliminar grafo\n" <<
+             "10 Recorrido en anchura\n" <<
+             "11 Recorrido en profundidad\n" <<
+             "12 Primero en anchura\n" <<
+             "13 Primero en profundidad\n" <<
+             "14 Ruta de menor costo (Dijkstra)\n" <<
              "15 Salir\n";
         cin >> valor;
         opcion = validar.ingresarInt(valor);
@@ -73,30 +77,36 @@ void procesarMenu(int & pOpcion, bool & salir) {
             listaAdyacenciaXVertice();
             break;
         case 4:
-            numVertices();
+            listaPredecesores();
             break;
         case 5:
-            eliminarVertice();
+            listaPredecesoresXVertice();
             break;
         case 6:
-            eliminarArista();
+            numVertices();
             break;
         case 7:
-            eliminarGrafo();
+            eliminarVertice();
             break;
         case 8:
-            recorridoAnchura();
+            eliminarArista();
             break;
         case 9:
-            recorridoProfundidad();
+            eliminarGrafo();
             break;
         case 10:
-            primeroAnchura();
+            recorridoAnchura();
             break;
         case 11:
-            primeroProfundidad();
+            recorridoProfundidad();
             break;
         case 12:
+            primeroAnchura();
+            break;
+        case 13:
+            primeroProfundidad();
+            break;
+        case 14:
             dijkstra();
             break;
         case 15:
@@ -363,6 +373,20 @@ void listaAdyacenciaXVertice(){
         cin >> vertice;
         for (auto & c: vertice) c = toupper(c);
         cout << gestor.listaAdyacenciaXVertice(vertice);
+    }
+}
+void listaPredecesores(){
+    cout << gestor.listaPredecesores();
+}
+void listaPredecesoresXVertice(){
+    if (gestor.vacio()){
+        cout << "Aún no se han ingresado vértices...\n";
+    } else {
+        string vertice;
+        cout << "Ingrese el nombre del vértice del cual desea mostrar sus predecesores\n";
+        cin >> vertice;
+        for (auto & c: vertice) c = toupper(c);
+        cout << gestor.listaPredecesoresXVertice(vertice);
     }
 }
 void eliminarVertice(){

@@ -192,22 +192,30 @@ string Grafo::insertaArista(string &salida, string &llegada, int peso) {
 }
 
 /**
- * Método:              listaAdyacencia
- * Descripción:         Método que permite imprimir la lista de adyacencia
+ * Método:              listaSucesores
+ * Descripción:         Método que permite imprimir la lista de adyacencia o sucesores
+ * @return              variable de tipo string que representa la lista de sucesores.
  */
-string Grafo::listaAdyacencia() {
+string Grafo::listaSucesores() {
     string lista = "";
+    int i;
     if(esListaVacia()) {
-        lista = "No existen vértices";
+        lista = "La lista está vacía\n";
     } else {
         lista = "Lista de vértices y adyacencias:\n";
         Vertice *vertAux = getHead();
         Arista * arisAux;
         while (vertAux != nullptr){
-            lista += vertAux->getNombre() + "->";
+            lista += vertAux->getNombre() + ": ";
             arisAux = vertAux->getAdy();
+            i = 0;
             while (arisAux != nullptr){
-                lista += arisAux->getAdy()->getNombre() + "->";
+                if (i == 0){
+                    lista += arisAux->getAdy()->getNombre();
+                } else {
+                    lista += ", " + arisAux->getAdy()->getNombre();
+                }
+                i += 1;
                 arisAux = arisAux->getSig();
             }
             vertAux = vertAux->getNext();
@@ -217,11 +225,17 @@ string Grafo::listaAdyacencia() {
     return lista;
 }
 
-
-string Grafo::listaAdyacenciaXVertice(int indice) {
+/**
+ * Método:              listaSucesoresXVertice
+ * Descripción:         Método que permite imprimir la lista de adyacencia de un vértice específico
+ * @param indice        variable de tipo int que representa el índice del vértice
+ * @return              variable de tipo string que representa la lista de adyacencia.
+ */
+string Grafo::listaSucesoresXVertice(int indice) {
     string lista = "";
+    int i = 0;
     if(esListaVacia()) {
-        lista = "No existen vértices";
+        lista = "La lista está vacía\n";
     } else {
         Vertice *vertAux = getHead();
         Arista * arisAux = nullptr;
@@ -231,7 +245,7 @@ string Grafo::listaAdyacenciaXVertice(int indice) {
                 if (arisAux == nullptr){
                     lista = "El vértice " + vertAux->getNombre() + " no tiene adyacencias\n";
                 } else {
-                    lista = "Lista de adyacencias del vértice " + vertAux->getNombre() + ":\n";
+                    lista = "Lista de adyacencias del vértice " + vertAux->getNombre() + ": ";
                 }
                 break;
             }
@@ -239,8 +253,13 @@ string Grafo::listaAdyacenciaXVertice(int indice) {
         }
         if (arisAux != nullptr){
             while (arisAux != nullptr){
-                lista += arisAux->getAdy()->getNombre() + "\n";
+                if (i == 0){
+                    lista += arisAux->getAdy()->getNombre();
+                } else {
+                    lista += ", " + arisAux->getAdy()->getNombre();
+                }
                 arisAux = arisAux->getSig();
+                i += 1;
             }
         } else {
             lista = "El vértice ingresado no existe\n";
@@ -248,6 +267,83 @@ string Grafo::listaAdyacenciaXVertice(int indice) {
     }
     return lista;
 }
+/**
+ * Método:              listaPredecesores
+ * Descripción:         Método que permite imprimir la lista de sucesores
+ * @return              variable de tipo string que representa la lista de adyacencia.
+ */
+string Grafo::listaPredecesores() {
+    string lista = "";
+    int i;
+    if(esListaVacia()) {
+        lista = "La lista está vacía\n";
+    } else {
+        lista = "Lista de vértices y predecesores:\n";
+        Vertice *vertAux = getHead();
+        Arista * arisAux;
+        while (vertAux != nullptr){
+            lista += vertAux->getNombre() + ": ";
+            arisAux = vertAux->getPrecedente();
+            i = 0;
+            while (arisAux != nullptr){
+                if (i == 0){
+                    lista += arisAux->getPrev()->getNombre();
+                } else {
+                    lista += ", " + arisAux->getPrev()->getNombre();
+                }
+                i += 1;
+                arisAux = arisAux->getAnt();
+            }
+            vertAux = vertAux->getNext();
+            lista += "\n";
+        }
+    }
+    return lista;
+}
+/**
+ * Método:              listaPredecesoresXVertice
+ * Descripción:         Método que permite imprimir la lista de predecesores de un vértice específico
+ * @param indice        variable de tipo int que representa el índice del vértice
+ * @return              variable de tipo string que representa la lista de predecesores.
+ */
+string Grafo::listaPredecesoresXVertice(int indice) {
+    string lista = "";
+    int i = 0;
+    if(esListaVacia()) {
+        lista = "La lista está vacía\n";
+    } else {
+        Vertice *vertAux = getHead();
+        Arista * arisAux = nullptr;
+        while (vertAux != nullptr && vertAux->getIndice() <= indice){
+            if (vertAux->getIndice() == indice){
+                arisAux = vertAux->getPrecedente();
+                if (arisAux == nullptr){
+                    lista = "El vértice " + vertAux->getNombre() + " no tiene predecesores\n";
+                } else {
+                    lista = "Lista de predecesores del vértice " + vertAux->getNombre() + ": ";
+                }
+                break;
+            }
+            vertAux = vertAux->getNext();
+        }
+        if (arisAux != nullptr){
+            while (arisAux != nullptr){
+                if (i == 0){
+                    lista += arisAux->getPrev()->getNombre();
+                } else {
+                    lista += ", " + arisAux->getPrev()->getNombre();
+                }
+                i += 1;
+                arisAux = arisAux->getAnt();
+            }
+        } else {
+            lista = "El vértice ingresado no existe\n";
+        }
+    }
+    return lista;
+}
+
+
 
 /**
  * Método:              eliminarArista
@@ -781,4 +877,5 @@ string Grafo::dijkstra(Vertice *origen, Vertice *destino) {
 bool Grafo::comparacion(pair<Vertice *, int> a, pair<Vertice *, int> b) {
     return a.second < b.second;
 }
+
 

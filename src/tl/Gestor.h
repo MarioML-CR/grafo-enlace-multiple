@@ -26,6 +26,10 @@ public:
 
     string listaAdyacenciaXVertice(string vertice);
 
+    string listaPredecesores();
+
+    string listaPredecesoresXVertice(string vertice);
+
     string eliminarArista(string salida, string llegada);
 
     string eliminarVertice(string vertice);
