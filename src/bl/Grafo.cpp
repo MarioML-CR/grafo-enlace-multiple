@@ -802,11 +802,13 @@ string Grafo::dijkstra(Vertice *origen, Vertice *destino) {
             costoActual = listaOrdenada.front().second; // el costo asociado a ese vértice será el costo actual
             listaOrdenada.pop_front(); // eliminar el primer vértice de la lista
             if (verticeActual == destino){ // si el vértice actual es igual al vértice destino
+                // mostrar la ruta encontrada y terminar
                 res = "Costo: " + to_string(costoActual);
                 band2 = 1;
                 // mostar la ruta encontrada y terminar
                 destinoActual = destino; // el vértice destino se convierte en destino actual
                 while (!pila.empty()){ // mientras la pila no esté vacía
+                    // imprimir el resultado actual
 //                    res += destinoActual->getNombre() + "<-"; // imprimir el destino actual
                     pilaRes.push(destinoActual->getNombre());
                     while (!pila.empty() && pila.top().second != destinoActual){ // mientras la pila no esté vacía y el vértice destino en el tope de la pila sea distinto del destino actual
@@ -843,7 +845,7 @@ string Grafo::dijkstra(Vertice *origen, Vertice *destino) {
                     listaOrdenada.emplace_back(aux->getAdy(), costoActual);
 //                    listaCostos.push_back(verticeCosto(aux->getAdy(), costoActual)); // insertar el vértice en la lista de costos, asociando el nuevo costo
 //                    listaOrdenada.push_back(verticeCosto(aux->getAdy(), costoActual)); // insertar el vértice en la lista ordenada, asociando el nuevo costo
-                    listaOrdenada.sort(comparacion);
+                    listaOrdenada.sort(comparacion); // se debe ordenar
                     pila.push(verticeVertice(verticeActual, aux->getAdy())); // se apila la pareja: vértice actual y vértice destino
                     costoActual -= aux->getPeso();
                 }
