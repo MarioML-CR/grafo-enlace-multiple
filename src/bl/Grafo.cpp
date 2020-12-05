@@ -261,8 +261,6 @@ string Grafo::listaSucesoresXVertice(int indice) {
                 arisAux = arisAux->getSig();
                 i += 1;
             }
-        } else {
-            lista = "El vértice ingresado no existe\n";
         }
     }
     return lista;
@@ -336,8 +334,6 @@ string Grafo::listaPredecesoresXVertice(int indice) {
                 i += 1;
                 arisAux = arisAux->getAnt();
             }
-        } else {
-            lista = "El vértice ingresado no existe\n";
         }
     }
     return lista;
@@ -820,7 +816,11 @@ string Grafo::dijkstra(Vertice *origen, Vertice *destino) {
                 }
                 break;
             }
-            aux = verticeActual->getAdy();
+            if (verticeActual->getAdy()->getNombre() == verticeActual->getNombre()){
+                verticeActual->getAdy()->getSig();
+            } else {
+                aux = verticeActual->getAdy();
+            }
             while (aux != nullptr){ // para cada vértice que el vértice actual tiene como destino
                 band = 0;
                 costoActual += aux->getPeso(); // calcular el costo del vértice destino, sumando su costo al costo actual
